@@ -1,6 +1,8 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import userRouter from './routes/userRoute.js';
+import { seedinitialProducts } from './services/productServices.js';
+import productRouter from './routes/productRoute.js';
 
 const app = express();
 const port = 3000;
@@ -11,7 +13,12 @@ mongoose
   .then(() => {
     console.log('Connected to MongoDB');
 
+    //seed initial products
+    seedinitialProducts();
+
     app.use('/users', userRouter);
+    app.use('/products',productRouter);
+  
     app.listen(port, () => {
       console.log(`Server is running on port ${port}`);
     });
