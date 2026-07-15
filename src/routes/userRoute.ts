@@ -1,0 +1,16 @@
+import express, { Router } from 'express';
+import { login, register } from '../services/userservices.js';
+
+const router=express.Router();
+
+router.post('/register',async (request,response)=>{  
+    const { firstName, lastName, email, password } = request.body;
+    const result = await register({ firstName, lastName, email, password });
+    response.status(result.statuscode).send(result.data);
+});
+router.post('/login',async (request,response)=>{    
+    const { email, password } = request.body;
+    const result = await login({ email, password });
+    response.status(200).send(result);
+});
+export default router;
