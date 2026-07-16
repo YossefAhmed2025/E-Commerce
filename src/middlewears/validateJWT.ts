@@ -22,6 +22,9 @@ const validateJWT = (req: Request, res: Response, next: NextFunction) => {
             return res.status(403).send({ error: 'Unauthorized' });
         }
         const userpayload = payload as { userId: string; firstName: string; email: string; lastName: string };
+        if (!userpayload.userId) {
+            return res.status(403).send({ error: 'Token is outdated, please login again to get a new one' });
+        }
         (req as any).user_Id = userpayload.userId;
         next();
     });
