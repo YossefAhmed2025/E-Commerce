@@ -21,7 +21,7 @@ export const register =async (registerData: Registerparams)=> {
     const newuser = new usermodel({ ...registerData, password: hashedPassword });
     await newuser.save();
 
-    return {data: generatejwt(newuser.firstName, newuser.email, newuser.lastName), statuscode: 200};
+    return {data: generatejwt(newuser.id, newuser.firstName, newuser.email, newuser.lastName), statuscode: 200};
 
 
 }
@@ -38,11 +38,11 @@ export const login = async (loginData: Loginparams) => {
     }
     const passwordMatch = await bcrypt.compare(loginData.password, finduser.password);
     if (passwordMatch) {
-       return { data: generatejwt(finduser.firstName, finduser.email,finduser.lastName), statuscode: 200 };
+       return { data: generatejwt(finduser.id, finduser.firstName, finduser.email,finduser.lastName), statuscode: 200 };
     }
     
      return { data: 'Invalid password', statuscode: 400 }};
      
-     const generatejwt=(firstName:string, email:string, lastName:string)=>{
-        return jwt.sign ({ firstName, email, lastName }, 'bcc54488416f36aefb23108a7d3df5768af152d8ad15e5cf8c2351ab9eaf88f0')   
+     const generatejwt=(userId:string, firstName:string, email:string, lastName:string)=>{
+        return jwt.sign ({ userId, firstName, email, lastName }, 'bcc54488416f36aefb23108a7d3df5768af152d8ad15e5cf8c2351ab9eaf88f0')
 }
