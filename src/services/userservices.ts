@@ -44,5 +44,5 @@ export const login = async (loginData: Loginparams) => {
      return { data: 'Invalid password', statuscode: 400 }};
      
      const generatejwt=(userId:string, firstName:string, email:string, lastName:string)=>{
-        return jwt.sign ({ userId, firstName, email, lastName }, 'bcc54488416f36aefb23108a7d3df5768af152d8ad15e5cf8c2351ab9eaf88f0')
+        return jwt.sign ({ userId, firstName, email, lastName }, process.env.JWT_SECRET as string);
 }

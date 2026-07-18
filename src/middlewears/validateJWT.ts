@@ -14,7 +14,7 @@ const validateJWT = (req: Request, res: Response, next: NextFunction) => {
         return res.status(403).send({ error: 'Unauthorized' });
     }
 
-    jwt.verify(token, 'bcc54488416f36aefb23108a7d3df5768af152d8ad15e5cf8c2351ab9eaf88f0', (err, payload) => {
+    jwt.verify(token, process.env.JWT_SECRET as string, (err, payload) => {
         if (err) {
             return res.status(403).send({ error: 'Unauthorized' });
         }
