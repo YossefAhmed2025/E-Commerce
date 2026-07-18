@@ -83,3 +83,36 @@ export const updateCartItem = async ({ userId, productId, quantity }: UpdateCart
     const updatedCart = await cart.save();
     return { data: updatedCart, status: 200 };
 }
+interface DeleteCartItemParams {
+    userId: string;
+    productId: any;
+}   
+
+export const deleteCartItem = async ({ userId, productId }: DeleteCartItemParams) => {
+    const cart = await getActivecartForUser({ userId });
+    const existingCartItemIndex = cart.items.findIndex((item) => item.product.toString() === productId);
+    if(existingCartItemIndex === -1){
+        return { data: "item not found in cart", status: 404 };
+    }
+    const othercartItems = cart.items.filter((p) => p.product.toString() !== productId);
+    let total = othercartItems.reduce((sum, item) => {
+        sum += item.quantity * item.unitPrice;
+        return sum;
+    }, 0);
+    cart.items = othercartItems as any;
+    cart.totalAmount = total;
+    const updatedCart = await cart.save();
+    return { data: updatedCart, status: 200 };
+
+}
+
+interface ClearCartParams {
+    userId: string;
+}
+export const clearCart = async ({ userId }: ClearCartParams) => {
+    const cart = await getActivecartForUser({ userId });
+    cart.items = [];    
+    cart.totalAmount = 0;
+    const updatedCart = await cart.save();
+    return { data: updatedCart, status: 200 };
+}       
