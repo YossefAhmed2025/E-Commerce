@@ -75,7 +75,5 @@ router.post("/checkout", validateJWT, async (request: ExtendedRequest, response)
         response.status(500).send({ error: 'Internal server error' });
     }
 });
-
-
 export default router;
 

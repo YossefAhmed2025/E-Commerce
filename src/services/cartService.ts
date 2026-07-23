@@ -19,7 +19,6 @@ export const getActivecartForUser= async ({userId}: {userId: string}) => {
     }
 
     return cart;
-
 };
 interface AddItemToCartParams {
     userId: string;
@@ -74,11 +73,10 @@ export const updateCartItem = async ({ userId, productId, quantity }: UpdateCart
 
     //recalculate the total price of the cart
     const othercartItems = cart.items.filter((p) => p.product.toString() !== productId);
-    let total = othercartItems.reduce((sum, item) => {
-        sum += item.quantity * item.unitPrice;
-        return sum;
+    let total = othercartItems.reduce<number>((sum, item) => {
+        return sum + Number(item.quantity) * Number(item.unitPrice);
     }, 0);
-    total += existingCartItem.quantity * existingCartItem.unitPrice;
+    total += Number(existingCartItem.quantity) * Number(existingCartItem.unitPrice);
     cart.totalAmount = total;
 
     const updatedCart = await cart.save();
@@ -96,8 +94,8 @@ export const deleteCartItem = async ({ userId, productId }: DeleteCartItemParams
         return { data: "item not found in cart", status: 404 };
     }
     const othercartItems = cart.items.filter((p) => p.product.toString() !== productId);
-    let total = othercartItems.reduce((sum, item) => {
-        sum += item.quantity * item.unitPrice;
+    let total = othercartItems.reduce<number>((sum, item) => {
+        sum += Number(item.quantity) * Number(item.unitPrice);
         return sum;
     }, 0);
     cart.items = othercartItems as any;

@@ -17,7 +17,7 @@ mongoose
 
     //seed initial products
     seedinitialProducts();
-
+    
 
     app.use('/users', userRouter);
     app.use('/products',productRouter);
